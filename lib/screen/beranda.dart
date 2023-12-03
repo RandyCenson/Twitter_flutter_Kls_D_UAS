@@ -96,8 +96,8 @@ class _BerandaState extends State<Beranda> with SingleTickerProviderStateMixin {
             child: TabBar(
               controller: tabCtrl,
               tabs: const [
-                Tab(text: 'Untuk Anda'),
                 Tab(text: 'Mengikuti'),
+                Tab(text: 'Untuk Anda'),
               ],
               labelColor: globals.warna2,
               unselectedLabelColor: Colors.grey,
