@@ -5,148 +5,81 @@ import 'package:flutter_application_1/screen/chat_screen.dart';
 import 'package:flutter_application_1/screen/globals.dart' as globals;
 import 'package:flutter_application_1/screen/home_screen.dart';
 
-String createChatRoomId(String userId1, String userId2) {
-  List<String> userIds = [userId1, userId2];
-  userIds.sort(); 
-  return userIds.join('_');
-}
-class user extends StatefulWidget {
-  const user({super.key});
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
 
   @override
-  State<user> createState() => _userState();
+
+  // ignore: library_private_types_in_public_api
+  _BottomNavBarState createState() => _BottomNavBarState();
 }
 
-class _userState extends State<user> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  final CollectionReference user = FirebaseFirestore.instance.collection('users');
+class _BottomNavBarState extends State<BottomNavBar> {
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
+    const Beranda(),
+    const SearchScreen(),
+    const NotifikasiScreen(),
+    const MailScreen(),
+  ];
+
+  
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+IconData NAMA=Icons.abc;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: globals.warna1,
-      appBar: AppBar(
-        backgroundColor: globals.warna1,
-        leading: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: globals.warna1,
-            shape: CircleBorder(),
-            elevation: 0,
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor:globals.warna1,
+        currentIndex: _currentIndex,
+        items:  [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              _currentIndex==0 ? homeFilledIcon : homeOutlinedIcon,
+              color: globals.warna2,
+              width: 24,
+              height: 24,
+            ),
+            label: '',
           ),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBar()));
-          },
-          child: Icon(Icons.arrow_back,color: globals.warna2,),
-        ),
-        title: Text("Direct Message",style: TextStyle(
-          color: Colors.white
-        ),),
-      ),
-      body:StreamBuilder(
-        stream: user.snapshots(),
-        builder: (context, AsyncSnapshot <QuerySnapshot> streamSnapshot){
-          if(streamSnapshot.hasData){
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index){
-                final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-                final CollectionReference notif =FirebaseFirestore.instance.collection('chat_room').doc(createChatRoomId(globals.uid, documentSnapshot.id)).collection('notif');
-                if (documentSnapshot.id == globals.uid) {
-            return SizedBox(); 
-          }
-          else{
-                return Container(
-                  height: 50,
-                  color: globals.warna1,
-                  child: ElevatedButton (
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: globals.warna1
-                    ),
-                    onPressed: () {
-                      globals.url2=documentSnapshot['url'];
-                      globals.nama2=documentSnapshot['name'];
-                      globals.uid2=documentSnapshot.id;
-                      globals.chat_room=createChatRoomId(globals.uid, documentSnapshot.id);
-                      hapusnotif(
-                        idPost: createChatRoomId(globals.uid, documentSnapshot.id),
-                        idlawan: documentSnapshot.id
-                      );
-                      print(globals.chat_room);
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen()));
-                    },
-                    child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        top: 0,
-                        left: -10,
-                        child:Container(
-                          width: 30,
-                          height: 30,
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 2,
-                            ),
-                          ),
-                          child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(documentSnapshot['url']
-                            ,fit: BoxFit.cover,),
-                            )           ,
-                          ),
-                      ),
-                      Positioned(
-                        top: 15,
-                        left: 40,
-                        child: Text(documentSnapshot['name'],style: TextStyle(
-                          color: globals.warna2
-                        ),),
-                      ),
-                      Positioned(
-                        top: 20,
-                        right: 0,
-                        child: StreamBuilder(
-  stream: notif.snapshots(),
-  builder: (context, AsyncSnapshot<QuerySnapshot> notifSnapshot) {
-    if (notifSnapshot.hasData) {
-      if (notifSnapshot.data!.docs.isNotEmpty) {
-        bool hasUnreadNotif = notifSnapshot.data!.docs.any((doc) => doc.id != globals.uid);
-        if (hasUnreadNotif) {
-          return Text('!');
-        }
-      }
-    }
-    return SizedBox(); 
-  },
-),
-                      )
-                    ],
-                  )
-                  )
-                );
-          }
-              },
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              searchIcon,
+              color: globals.warna2,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon:SvgPicture.asset(
+              _currentIndex==2 ? notifFilledIcon : notifOutlinedIcon,
+              color: globals.warna2,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              _currentIndex==3 ? envelopeFilledIcon : envelopeOutlinedIcon,
+              color: globals.warna2,
+              height: 24,
+            ),
+            label: '',
+          ),
+        ],
       ),
     );
   }
-  Future<void> hapusnotif({required String idPost,required String idlawan}) async {
-    final docReference = FirebaseFirestore.instance
-        .collection('chat_room')
-        .doc(idPost)
-        .collection('notif')
-        .doc(idlawan);
-
-    await docReference.delete();
-  }
 }
-
 class NotifikasiScreen extends StatefulWidget {
   const NotifikasiScreen({super.key});
 
