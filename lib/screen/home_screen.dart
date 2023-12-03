@@ -252,6 +252,150 @@ Color warna=Colors.grey;
   }
 }
 
+class MailScreen extends StatefulWidget {
+  const MailScreen({super.key});
+
+  @override
+  State<MailScreen> createState() => _MailScreenState();
+}
+
+class _MailScreenState extends State<MailScreen> {
+  
+  Widget build(BuildContext context) {
+    return Scaffold(
+        drawer:  const WidgetDrawer(),
+        backgroundColor: globals.warna1,
+        appBar:AppBar(
+            elevation: 1,
+            backgroundColor: globals.warna1,
+            leading: Builder(builder:(context){
+        return GestureDetector(
+          onTap: () {
+            Scaffold.of(context).openDrawer();
+          },
+          child:Container(
+          width: 30,
+          height: 30,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Colors.grey,
+              width: 2,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: Image.network(
+              globals.url,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ), 
+        );
+        } ),
+            actions: <Widget>[
+               IconButton(
+              icon:  Icon(Icons.settings,color: globals.warna2),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Pengaturan()));
+              },
+            )
+            ],
+            title: Container(
+              decoration: BoxDecoration(
+                  color: globals.warna3,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              child:  TextField(
+                decoration: InputDecoration(
+                  isCollapsed: true,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                  hintText: "   Search Direct Messages",
+                  hintStyle: TextStyle(
+                    color: globals.warna2,
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+            )),
+        body: Stack(
+          children: <Widget>[
+            Positioned(
+                bottom: MediaQuery.of(context).viewInsets.bottom+300,
+                left: 20,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: globals.warna1,
+                  child:  Text(
+                  "Welcome to your inbox!",
+                  style: TextStyle(
+                    color: globals.warna2,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ))),
+              Positioned(
+                  bottom: MediaQuery.of(context).viewInsets.bottom+225,
+                  left: 20,
+                  child:
+                  Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: globals.warna1,
+                  child:const Text(
+                  "Drop a line, share Tweets and more with private conversations between you and others on Twitter.",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 80, 79, 79),
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+                  )
+                  
+                ),
+            Positioned(
+              bottom: MediaQuery.of(context).viewInsets.bottom+160,
+              left: 20,
+              child:
+              ElevatedButton(
+                onPressed: () => {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>user()))
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.all(14),
+                  backgroundColor: Colors.blue
+                ),
+                child: const Text("Write a message",style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),),
+              ),
+            ),
+            Positioned(
+              bottom: MediaQuery.of(context).viewInsets.bottom+30,
+              right :MediaQuery.of(context).viewInsets.right+25,
+                child: Container(
+                  decoration:const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue,
+                  ),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.mail,
+                        color: Colors.white,
+                      )),
+                ),
+            ),
+            
+          ],
+        ));
+  }
+}
 
 
 
