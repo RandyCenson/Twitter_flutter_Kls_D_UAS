@@ -592,5 +592,271 @@ class _IconWidgetState extends State<IconWidget> {
       ),
     );
   }
+
+  class PostFire extends StatefulWidget {
+  const PostFire({super.key});
+
+  @override
+  State<PostFire> createState() => _PostFireState();
+}
+
+class _PostFireState extends State<PostFire> {
+  final CollectionReference _produk =
+      FirebaseFirestore.instance.collection('post');
+  final List<Item> items = List.generate(1000, (index) => Item());
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _produk.orderBy('date', descending: true).snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+        if (streamSnapshot.hasData) {
+          return ListView.builder(
+            itemCount: streamSnapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              final DocumentSnapshot documentSnapshot =
+                  streamSnapshot.data!.docs[index];
+              CollectionReference likeCollection =
+                  _produk.doc(documentSnapshot.id).collection('like');
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 30,
+                      height: 30,
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 2,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          documentSnapshot['url'],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      flex: 3,
+                                      child: Text(
+                                        documentSnapshot['name'],
+                                        style: TextStyle(
+                                          color: globals.warna2,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: Text(
+                                          "@${documentSnapshot['name']}",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      documentSnapshot['date'].substring(0,16),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(100),
+                                onTap: () {},
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.more_vert_rounded,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: (documentSnapshot['text']),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: globals.warna2.withOpacity(0.8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconWidget(
+                                  color: items[index].tombol3 ? Colors.green :Colors.grey,
+                                  path: commentIcon,
+                                  text: '0',
+                                  onTap: () {
+                                    setState(() {
+                                      items[index].tombol3=!items[index].tombol3;
+                                    });
+                                  },
+                                ),
+                                IconWidget(
+                                  path: retweetIcon,
+                                  color: items[index].tombol1 ? Colors.blue : Colors.grey,
+                                  text: '0',
+                                  onTap: () {
+                                    setState(() {
+                                      items[index].tombol1=!items[index].tombol1;
+                                    });
+                                  },
+                                ),
+                                StreamBuilder(
+                                  stream: likeCollection.snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot>
+                                          likeSnapshot) {
+                                    if (likeSnapshot.hasData) {
+                                      int likeCount =
+                                          likeSnapshot.data!.docs.length;
+                                      return LikeButton(
+                                        onTap: (isLiked) async {
+                                          setState(() {
+                                            if (items[index].tombol) {
+                                              unlikePost(
+                                                idPost: documentSnapshot.id);
+                                          } else {
+                                            LikePost(
+                                                idpost: documentSnapshot.id);
+                                          }
+                                          items[index].tombol=!items[index].tombol;
+                                          });
+                                          return items[index].tombol;
+                                        },
+                                        size: 16,
+                                        bubblesColor: const BubblesColor(
+                                          dotPrimaryColor: Colors.white,
+                                          dotSecondaryColor: Colors.grey,
+                                        ),
+                                        circleColor: const CircleColor(
+                                            start: Colors.white,
+                                            end: Colors.red),
+                                        isLiked: false,
+                                        likeBuilder: (isLiked) {
+                                          return isLiked
+                                              ? SvgPicture.asset(
+                                                  likeFilledIcon,
+                                                  color: Colors.red,
+                                                )
+                                              : SvgPicture.asset(
+                                                  likeOutlinedIcon,
+                                                  color: Colors.grey,
+                                                );
+                                        },
+                                        likeCount: likeCount,
+                                        countBuilder:
+                                            (likeCount, isLiked, text) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 2.0),
+                                            child: Text(
+                                              '${likeCount}',
+                                              style: TextStyle(
+                                                color: isLiked
+                                                    ? Colors.red
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
+                                ),
+                                IconWidget(
+                                  path: viewsIcon,
+                                  text: "0",
+                                  onTap: () {},
+                                ),
+                                IconWidget(
+                                  path: shareIcon,
+                                  onTap: () {},
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  Future LikePost({required String idpost}) async {
+    final docUser = FirebaseFirestore.instance
+        .collection('post')
+        .doc(idpost)
+        .collection('like')
+        .doc(globals.uid);
+
+
+    final json = {
+      'like': 'yes',
+    };
+    await docUser.set(json);
+  }
+
+  Future<void> unlikePost({required String idPost}) async {
+    final docReference = FirebaseFirestore.instance
+        .collection('post')
+        .doc(idPost)
+        .collection('like')
+        .doc(globals.uid);
+
+    await docReference.delete();
+  }
+}
 }
 
