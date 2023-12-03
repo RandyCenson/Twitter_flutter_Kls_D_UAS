@@ -397,6 +397,286 @@ class _MailScreenState extends State<MailScreen> {
   }
 }
 
+class WidgetDrawer extends StatefulWidget {
+  const WidgetDrawer({super.key});
 
+  @override
+  State<WidgetDrawer> createState() => _WidgetDrawerState();
+}
+
+class _WidgetDrawerState extends State<WidgetDrawer> {
+
+  bool tombol=false;
+  @override
+  Widget build(BuildContext context) {
+    
+    return Drawer(
+      width: MediaQuery.of(context).size.width-110,
+      backgroundColor: globals.warna1,
+      child:Stack(
+      children: <Widget>[
+        Positioned(
+          top: 40,
+          left: 10,
+          child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration:  BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  image: DecorationImage(
+                                    image: NetworkImage(globals.url),
+                                    fit: BoxFit.cover
+                                  )
+                                ),
+                              )
+        ),
+        Positioned(
+          top: 100,
+          left: 10,
+          child: Text(globals.nama,style: TextStyle(
+                color: globals.warna2,
+                fontSize: 18,
+                fontWeight: FontWeight.w500
+              ),),
+            ),
+        Positioned(
+          top:100,
+          left: 110,
+          child: Icon(Icons.lock,color: globals.warna2,size: 20,),
+        ),
+        const Positioned(
+          top: 125,
+          left: 10,
+          child: Text("@randygantengbanget",style: TextStyle(
+                color: Color.fromARGB(255, 80, 79, 79),
+                fontSize: 15,
+                fontWeight: FontWeight.normal
+              ),),
+            ),
+        Positioned(
+          top: 160,
+          left: 10,
+          child: Text("4",style: TextStyle(
+                color: globals.warna2,
+                fontSize: 15,
+                fontWeight: FontWeight.normal
+              ),),
+            ),
+        const Positioned(
+          top: 160,
+          left: 25,
+          child: Text("Mengikuti",style: TextStyle(
+                color: Color.fromARGB(255, 80, 79, 79),
+                fontSize: 16,
+                fontWeight: FontWeight.normal
+              ),),
+            ),
+        Positioned(
+          top: 160,
+          left: 105,
+          child: Text("18",style: TextStyle(
+                color: globals.warna2,
+                fontSize: 15,
+                fontWeight: FontWeight.normal
+              ),),
+            ),
+        const Positioned(
+          top: 160,
+          left: 129,
+          child: Text("Pengikut",style: TextStyle(
+                color: Color.fromARGB(255, 80, 79, 79),
+                fontSize: 16,
+                fontWeight: FontWeight.normal
+              ),),
+            ),
+        Positioned(
+          top: 240,
+          left: 10,
+          child: Icon(Icons.account_box,color: globals.warna2,size: 30,),
+        ),
+        Positioned(
+          top: 234,
+          left: 50,
+          
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context,MaterialPageRoute(builder: (context)=> const Profile()));
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor: globals.warna1
+            ),
+            child:Text("Profil",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 25,
+            ),),
+          ),
+        ),
+        Positioned(
+          top: 304,
+          left: 10,
+          child: Icon(FontAwesomeIcons.xTwitter,color: globals.warna2,size: 30,),
+        ),
+        Positioned(
+          top: 295,
+          left: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Premium()));
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor: globals.warna1,
+              
+            ),
+            child:Text("Premium",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 25,
+            ),),
+          ),
+        ),
+        Positioned(
+          top: 350,
+          left: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor: globals.warna1
+            ),
+            child:Text("Markah",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 25,
+            ),),
+          ),
+        ),
+        Positioned(
+          top: 410,
+          left: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor: globals.warna1
+            ),
+            child:Text("Daftar",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 25,
+            ),),
+          ),
+        ),
+        Positioned(
+          top: 465,
+          left: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor: globals.warna1
+            ),
+            child:Text("Monetisasi",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 25,
+            ),),
+          ),
+        ),
+        Positioned(
+          top: 210,
+          left: 10,
+          child: Container(
+            width: 290,
+            height: 2,
+            color: const Color.fromARGB(255, 107, 103, 103),
+          ),
+        ),
+        Positioned(
+          top: 580,
+          left: 10,
+          child: Container(
+            width: 290,
+            height: 2,
+            color: const Color.fromARGB(255, 107, 103, 103),
+          ),
+        ),
+        Positioned(
+          top: 600,
+          left: 10,
+          child:Text("Alat Profesional",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 17,
+            ),),
+        ),
+        Positioned(
+          top: 650,
+          left: 10,
+          child:Text("Pengaturan & Dukungan",style: TextStyle(
+            color: globals.warna2,
+            fontSize: 17,
+            ),),
+        ),
+        Positioned(
+          top: 585,
+          left: 240,
+          child: ElevatedButton(
+            onPressed: () {
+              
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor:globals.warna1,
+              shape: const CircleBorder(),
+            ),
+            child: Icon(Icons.arrow_drop_down_outlined,size: 30,color: globals.warna2,),
+          ),
+        ),
+        Positioned(
+          top: 635,
+          left: 240,
+          child: ElevatedButton(
+            onPressed: () {
+              
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 114, 112, 112),
+              elevation: 0,
+              backgroundColor:globals.warna1,
+              shape: const CircleBorder(),
+            ),
+            child: Icon(Icons.arrow_drop_down_outlined,size: 30,color: globals.warna2,),
+          ),
+        ),
+        Positioned(
+          top: 358,
+          left: 10,
+          child: Icon(Icons.bookmark_border,color: globals.warna2,size:35 ),
+        ),
+        Positioned(
+          top: 416,
+          left: 10,
+          child: Icon(Icons.library_books,color: globals.warna2,size: 35,),
+        ),
+        Positioned(
+          top: 470,
+          left: 10,
+          child: Icon(Icons.money,color: globals.warna2,size: 35,),
+        )
+        
+      ],
+    ));
+  }
+}
 
 
