@@ -1,0 +1,18 @@
+library ayamgoreng.globals;
+import 'package:flutter/material.dart';
+String ayam="";
+double ikan=0;
+Color warna1=Colors.black;
+Color warna2=Colors.white;
+Color warna3=const Color.fromARGB(255, 32, 32, 32);
+bool nyala=false;
+bool tombol=false;
+String uid="";
+double x=0;
+String nama="";
+String url="https://upload.wikimedia.org/wikipedia/commons/4/49/A_black_image.jpg";
+String chat_room="";
+String isipesan="";
+String nama2="";
+String url2="";
+String uid2="";
