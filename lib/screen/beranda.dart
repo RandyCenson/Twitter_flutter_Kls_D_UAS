@@ -833,8 +833,7 @@ class _PostFireState extends State<PostFire> {
       },
     );
   }
-
-  Future LikePost({required String idpost}) async {
+    Future LikePost({required String idpost}) async {
     final docUser = FirebaseFirestore.instance
         .collection('post')
         .doc(idpost)
@@ -857,6 +856,5 @@ class _PostFireState extends State<PostFire> {
 
     await docReference.delete();
   }
-}
 }
 
