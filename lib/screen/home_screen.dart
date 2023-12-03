@@ -1,9 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/beranda.dart';
 import 'package:flutter_application_1/screen/chat_screen.dart';
 import 'package:flutter_application_1/screen/globals.dart' as globals;
 import 'package:flutter_application_1/screen/home_screen.dart';
+import 'package:flutter_application_1/screen/pengaturan.dart';
+import 'package:flutter_application_1/screen/premium.dart';
+import 'package:flutter_application_1/screen/profile.dart';
+import 'package:flutter_application_1/screen/user.dart';
+import 'package:flutter_application_1/utils/assets.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
