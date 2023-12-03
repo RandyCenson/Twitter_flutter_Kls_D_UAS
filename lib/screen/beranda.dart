@@ -592,7 +592,7 @@ class _IconWidgetState extends State<IconWidget> {
       ),
     );
   }
-
+}
   class PostFire extends StatefulWidget {
   const PostFire({super.key});
 
